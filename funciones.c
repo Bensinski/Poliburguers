@@ -66,12 +66,11 @@ void ingresoing(Ingredientes *ing, int *cont)
         } while (duplicado == 1);
         printf("Cantidad: ");
         ing[*cont].cantidad = validarcantidad(0);
-        printf("Unidad (Unidades, Kg, Litros): ");
+        printf("Unidad (Ej: Unidades, Kg, Litros, etc.): ");
         leercadena(ing[*cont].unidad, 15);
         printf("Costo: $");
         ing[*cont].costo = validarcantidad(0);
         (*cont)++;
-
         printf("Desea ingresar otro ingrediente? 1.Si / 2.No\n");
         printf(">> ");
         op = validarfloat(1, 2);
@@ -106,7 +105,6 @@ void receta(Productos *prod, int pos, Ingredientes *ing, int conting){
     for (int i = 0; i < num; i++)
     {
         printf("Ingrediente %d\n", i + 1);
-        printf("Seleccione el ID: ");
         int id;
         do{
             printf("Seleccione el ID: ");
