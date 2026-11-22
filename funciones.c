@@ -107,7 +107,17 @@ void receta(Productos *prod, int pos, Ingredientes *ing, int conting){
     {
         printf("Ingrediente %d\n", i + 1);
         printf("Seleccione el ID: ");
-        int id = validarfloat(1, conting);
+        int id;
+        do{
+            printf("Seleccione el ID: ");
+            id = validarfloat(1, conting);
+
+            if (prod[pos].receta[id - 1] > 0)
+            {
+                printf("Este ingrediente ya fue agregado a la receta.\n");
+            }
+
+        } while (prod[pos].receta[id - 1] > 0);
         printf("Cantidad necesaria por hamburguesa: ");
         float cantidad = validarcantidad(0);
         prod[pos].receta[id - 1] = cantidad;
