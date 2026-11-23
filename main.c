@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
         printf("3. Informacion registrada de producto\n");
         printf("4. Editar informacion\n");
         printf("5. Eliminar producto\n");
-        printf("6. Evaluar pedido\n");
+        printf("6. Vender (Evaluar pedido)\n");
         printf("7. Actualizar inventario\n");
         printf("8. Consultar existencias finales\n");
         printf("9. Salir\n");

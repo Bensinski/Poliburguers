@@ -43,21 +43,17 @@ void ingresoing(Ingredientes *ing, int *cont)
         printf("Ingrediente %d\n", *cont + 1);
         ing[*cont].id = *cont + 1;
         int duplicado;
-        do
-        {
+        do{
             duplicado = 0;
             printf("Nombre: ");
             leercadena(ing[*cont].nombre, 50);
-            if (strlen(ing[*cont].nombre) == 0)
-            {
+            if (strlen(ing[*cont].nombre) == 0){
                 printf("El nombre no puede estar vacio.\n");
                 duplicado = 1;
                 continue;
             }
-            for (int i = 0; i < *cont; i++)
-            {
-                if (strcasecmp(ing[*cont].nombre, ing[i].nombre) == 0)
-                {
+            for (int i = 0; i < *cont; i++){
+                if (strcasecmp(ing[*cont].nombre, ing[i].nombre) == 0){
                     printf("Ingrediente ya registrado.\n");
                     duplicado = 1;
                     break;
@@ -68,7 +64,7 @@ void ingresoing(Ingredientes *ing, int *cont)
         ing[*cont].cantidad = validarcantidad(0);
         printf("Unidad (Ej: Unidades, Kg, Litros, etc.): ");
         leercadena(ing[*cont].unidad, 15);
-        printf("Costo: $");
+        printf("Costo unitario del ingrediente: $");
         ing[*cont].costo = validarcantidad(0);
         (*cont)++;
         printf("Desea ingresar otro ingrediente? 1.Si / 2.No\n");
@@ -77,45 +73,37 @@ void ingresoing(Ingredientes *ing, int *cont)
     } while (op == 1);
 }
 void mostrarinventario(Ingredientes *ing, int cont){
-    if (cont == 0)
-    {
+    if (cont == 0){
         printf("No hay ingredientes registrados.\n");
         return;
     }
     printf("Inventario de Ingredientes: \n");
     printf("%-10s %-50s %-15s %-15s %-15s\n", "ID", "Nombre", "Cantidad", "Unidad", "Costo");
-    for (int i = 0; i < cont; i++)
-    {
+    for (int i = 0; i < cont; i++){
          printf("%-10d %-50s %-15.2f %-15s %-15.2f\n", ing[i].id, ing[i].nombre, ing[i].cantidad, ing[i].unidad, ing[i].costo);
     }
 }
 void receta(Productos *prod, int pos, Ingredientes *ing, int conting){
-    for (int i = 0; i < 20; i++)
-    {
+    for (int i = 0; i < 20; i++){
         prod[pos].receta[i] = 0;
     }
     printf("Ingredientes disponibles: \n");
     printf("%-10s %-50s %-15s\n", "ID", "Nombre", "Cantidad");
-    for (int i = 0; i < conting; i++)
-    {
+    for (int i = 0; i < conting; i++){
         printf("%-10d %-50s %-15.2f\n", ing[i].id, ing[i].nombre, ing[i].cantidad);
     }
     printf("Cantidad de ingredientes: ");
     int num = validarfloat(0, conting);
-    for (int i = 0; i < num; i++)
-    {
+    for (int i = 0; i < num; i++){
         printf("Ingrediente %d\n", i + 1);
         int id;
         do{
             printf("Seleccione el ID: ");
             id = validarfloat(1, conting);
-
-            if (prod[pos].receta[id - 1] > 0)
-            {
+            if (prod[pos].receta[id - 1] > 0){
                 printf("Este ingrediente ya fue agregado a la receta.\n");
             }
-
-        } while (prod[pos].receta[id - 1] > 0);
+        }while (prod[pos].receta[id - 1] > 0);
         printf("Cantidad necesaria por hamburguesa: ");
         float cantidad = validarcantidad(0);
         prod[pos].receta[id - 1] = cantidad;
@@ -138,7 +126,6 @@ void ingresoprod(Productos *prod, int *cont, Ingredientes *ing, int conting){
         int duplicado;
         do{
             duplicado = 0;
-
             printf("Nombre: ");
             leercadena(prod[*cont].nombre, 100);
             if (strlen(prod[*cont].nombre) == 0){
@@ -167,74 +154,71 @@ void ingresoprod(Productos *prod, int *cont, Ingredientes *ing, int conting){
     } while (op == 1);
 }
 void mostrarproductos(Productos *prod, int cont,  Ingredientes *ing, int conting){
-    if (cont == 0)
-    {
+    if (cont == 0){
         printf("No hay productos registrados.\n");
         return;
     }
     printf("---Menu Disponible---\n");
-    printf("%-10s %-50s %-15s %-20s\n", "ID", "Nombre", "Precio", "Tiempo (Min)");
-    for (int i = 0; i < cont; i++)
-    {
-         printf("%-10d %-50s %-15.2f %-20.2f\n", prod[i].id, prod[i].nombre, prod[i].precio, prod[i].tiempo);
-         printf("Ingredientes: \n");
-         for (int n = 0; n < conting; n++)
-         {
+    for (int i = 0; i < cont; i++){
+        printf("%-10s %-50s %-15s %-20s\n", "ID", "Nombre", "Precio", "Tiempo (Min)");
+        printf("%-10d %-50s %-15.2f %-20.2f\n", prod[i].id, prod[i].nombre, prod[i].precio, prod[i].tiempo);
+        printf("Ingredientes: \n");
+        for (int n = 0; n < conting; n++){
             if (prod[i].receta[n]>0){
                  printf("- %s: %.2f %s\n", ing[n].nombre, prod[i].receta[n], ing[n].unidad);
             }
          }
     }
 }
-void editreceta(Productos *prod, int pos, Ingredientes *ing, int conting)
-{
+void editreceta(Productos *prod, int pos, Ingredientes *ing, int conting){
     int op, id, posing;
-    do {
+    do{
         printf("\n--- EDITAR RECETA ---\n");
         printf("Producto: %s\n", prod[pos].nombre);
 
         printf("\nIngredientes actuales:\n");
-        for (int i = 0; i < conting; i++)
-        {
-            if (prod[pos].receta[i] > 0)
-            {
-                printf("ID: %d | %s | %.2f %s\n",
-                       ing[i].id,
-                       ing[i].nombre,
-                       prod[pos].receta[i],
-                       ing[i].unidad);
+        for (int i = 0; i < conting; i++){
+            if (prod[pos].receta[i] > 0){
+                printf("ID: %d | %s | %.2f %s\n", ing[i].id, ing[i].nombre, prod[pos].receta[i], ing[i].unidad);
             }
         }
         printf("\n1. Agregar ingrediente\n");
-        printf("2. Modificar cantidad\n");
+        printf("2. Modificar cantidad de ingrediente\n");
         printf("3. Quitar ingrediente\n");
         printf("4. Cancelar\n");
         printf(">> ");
         op = validarfloat(1, 4);
         if (op == 4)
             break;
-        mostrarinventario(ing, conting);
+        if (op == 1){
+            mostrarinventario(ing, conting);
+        }
+        else
+        {
+            printf("\n--- Ingredientes de la receta ---\n");
+            for (int i = 0; i < conting; i++){
+                if (prod[pos].receta[i] > 0){
+                    printf("ID: %d | %s | %.2f %s\n", ing[i].id, ing[i].nombre, prod[pos].receta[i], ing[i].unidad);
+                }
+            }
+        }
         printf("Ingrese el ID del ingrediente: ");
         id = validarfloat(1, 20);
         posing = -1;
-        for (int i = 0; i < conting; i++)
-        {
-            if (id == ing[i].id)
-            {
+        for (int i = 0; i < conting; i++){
+            if (id == ing[i].id){
                 posing = i;
                 break;
             }
         }
-        if (posing == -1)
-        {
+        if (posing == -1){
             printf("Ingrediente no encontrado.\n");
             return;
         }
         switch (op)
         {
             case 1:
-                if (prod[pos].receta[posing] > 0)
-                {
+                if (prod[pos].receta[posing]>0){
                     printf("El ingrediente ya pertenece a la receta.\n");
                     break;
                 }
@@ -244,49 +228,41 @@ void editreceta(Productos *prod, int pos, Ingredientes *ing, int conting)
                 printf("Ingrediente agregado correctamente.\n");
                 break;
             case 2:
-                if (prod[pos].receta[posing] == 0)
-                {
+                if (prod[pos].receta[posing]==0){
                     printf("Este ingrediente no pertenece a la receta.\n");
                     break;
                 }
                 printf("Nueva cantidad por hamburguesa: ");
                 prod[pos].receta[posing] = validarcantidad(0);
-
                 printf("Cantidad modificada correctamente.\n");
                 break;
             case 3:
-                if (prod[pos].receta[posing] == 0)
-                {
+                if (prod[pos].receta[posing] == 0){
                     printf("Este ingrediente no pertenece a la receta.\n");
                     break;
                 }
-
                 prod[pos].receta[posing] = 0;
-
                 printf("Ingrediente quitado de la receta.\n");
                 break;
         }
     } while (op != 4);
 }
 void editarprod(Productos *prod, int cont, Ingredientes *ing, int conting){
-    if (cont == 0)
-    {
+    if (cont == 0){
         printf("No hay productos registrados para editar.\n");
         return;
     }
     int id, pos = -1, duplicado;
     printf("Ingrese el ID del producto (1-%d): ", cont);
     id = validarfloat(1, cont);
-    for (int i = 0; i < cont; i++)
-    {
+    for (int i = 0; i < cont; i++){
         if (id == prod[i].id)
         {
             pos = i;
             break;
         }
     }
-    if (pos == -1)
-    {
+    if (pos == -1){
         printf("Producto no encontrado o no existente\n");
         return;
     }
@@ -313,8 +289,7 @@ void editarprod(Productos *prod, int cont, Ingredientes *ing, int conting){
                 continue;
             }
             for (int i = 0; i < cont; i++){
-                if (i != pos && strcasecmp(prod[pos].nombre, prod[i].nombre) == 0)
-                {
+                if (i != pos && strcasecmp(prod[pos].nombre, prod[i].nombre) == 0){
                     printf("Producto ya registrado.\n");
                     duplicado = 1;
                     break;
@@ -372,123 +347,123 @@ void editarprod(Productos *prod, int cont, Ingredientes *ing, int conting){
 }
 void eliminar(Productos *prod, int *cont)
 {
-    if (*cont == 0)
-    {
+    if (*cont == 0){
         printf("No hay productos registrados para eliminar.\n");
         return;
     }
     int id, pos = -1;
     printf("Ingrese el ID del producto a eliminar (1-%d): ", *cont);
     id = validarfloat(1, *cont);
-    for (int i = 0; i < *cont; i++)
-    {
+    for (int i = 0; i < *cont; i++){
         if (prod[i].id == id)
         {
             pos = i;
             break;
         }
     }
-    if (pos == -1)
-    {
+    if (pos == -1){
         printf("Producto no encontrado.\n");
         return;
     }
     printf("Esta seguro de eliminar este producto? 1.Si / 2.No\n");
     int opc = validarfloat(1, 2);
-    if (opc == 1)
-    {
-        for (int i = pos; i < *cont - 1; i++)
-        {
+    if (opc == 1){
+        for (int i = pos; i < *cont - 1; i++){
             prod[i] = prod[i + 1];
         }
         (*cont)--;
         printf("Producto eliminado correctamente\n");
-        for (int i = 0; i < *cont; i++)
-        {
+        for (int i = 0; i < *cont; i++){
             prod[i].id = i + 1;
         }
     }
 }
 void evaluarpedido(Productos *prod, int cont, Ingredientes *ing, int conting){
-    if (cont == 0 || conting == 0)
-    {
+    if (cont == 0 || conting == 0){
         printf("No hay productos o ingredientes registrados.\n");
         return;
     }
     float necesarios[20] = {0};
-    float tiempotot = 0, pretot= 0;
-    float tiempodis;
-    int cantidad, id, pos, op, viable = 1;
-    do
-    {
-        printf("\n---Evaluar viabilidad del pedido---\n");
-        printf("%-10s %-30s %-10s\n", "ID", "Producto", "Precio");
-        for (int i = 0; i < cont; i++)
-        {
-            printf("%-10d %-30s $%-10.2f\n",
-                   prod[i].id, prod[i].nombre, prod[i].precio);
+    float tiempotot = 0, pretot = 0, tiempodis;
+    int cantidad, id, pos, op, invenins = 0, tiempoins = 0;
+    do{
+        printf("\n---Vender y evaluar la viabilidad del pedido---\n");
+        printf("%-10s %-30s %-10s %-10s\n", "ID", "Producto", "Precio", "Tiempo");
+        for (int i = 0; i < cont; i++){
+            printf("%-10d %-30s $%-10.2f %-10.2fmin\n", prod[i].id, prod[i].nombre, prod[i].precio, prod[i].tiempo);
         }
         printf("\nIngrese el ID del producto: ");
         id = validarfloat(1, cont);
         pos = -1;
-        for (int i = 0; i < cont; i++)
-        {
-            if (prod[i].id == id)
-            {
+        for (int i = 0; i < cont; i++){
+            if (prod[i].id == id){
                 pos = i;
                 break;
             }
         }
-        if (pos == -1)
-        {
+        if (pos == -1){
             printf("Producto no encontrado.\n");
             return;
         }
         printf("Cantidad de hamburguesas: ");
         cantidad = validarcantidad(0);
-        for (int i = 0; i < conting; i++)
-        {
+        for (int i = 0; i < conting; i++){
             necesarios[i] += prod[pos].receta[i] * cantidad;
         }
-        tiempotot+= prod[pos].tiempo * cantidad;
-        pretot+= prod[pos].precio * cantidad;
+        tiempotot += prod[pos].tiempo * cantidad;
+        pretot += prod[pos].precio * cantidad;
         printf("Desea agregar otro tipo de hamburguesa? 1.Si / 2.No\n");
         op = validarfloat(1, 2);
     } while (op == 1);
     printf("\nTiempo disponible (minutos): ");
-    tiempodis=validarcantidad(0);
+    tiempodis = validarcantidad(0);
     printf("\n--- RESUMEN DEL PEDIDO ---\n");
     printf("Precio total: $%.2f\n", pretot);
     printf("Tiempo estimado: %.2f minutos\n", tiempotot);
     printf("\n--- EVALUACION DE INGREDIENTES ---\n");
-    for (int i = 0; i < conting; i++)
-    {
-        if (necesarios[i] > 0)
-        {
+    for (int i = 0; i < conting; i++){
+        if (necesarios[i] > 0){
             printf("%s: Necesario %.2f %s / Disponible %.2f %s\n",
                    ing[i].nombre,
                    necesarios[i], ing[i].unidad,
                    ing[i].cantidad, ing[i].unidad);
-
-            if (necesarios[i] > ing[i].cantidad)
-            {
+            if (necesarios[i] > ing[i].cantidad){
                 printf("Ingrediente insuficiente.\n");
-                viable = 0;
+                invenins = 1;
             }
         }
     }
-    if (tiempotot>tiempodis)
-    {
-        printf("\nTiempo insuficiente para preparar el pedido.\n");
-        viable = 0;
+    if (tiempotot > tiempodis){
+        tiempoins = 1;
     }
-    if (viable)
-    {
+    if (invenins == 0 && tiempoins == 0){
         printf("\nPEDIDO VIABLE: Ingredientes y tiempo suficientes.\n");
+
+        printf("\nDesea confirmar el pedido? 1.Si / 2.No\n");
+        printf(">> ");
+        int conff = validarfloat(1, 2);
+        if (conff == 1){
+            for (int i = 0; i < conting; i++){
+                ing[i].cantidad -= necesarios[i];
+            }
+            printf("\nPedido confirmado exitosamente!\n");
+            printf("Total de la venta: $%.2f\n", pretot);
+        }
+        else{
+            printf("\nPedido cancelado.\n");
+        }
     }
-    else
-    {
-        printf("\nPEDIDO NO VIABLE: Recursos o tiempo insuficientes.\n");
+    else{
+        if (invenins == 1 && tiempoins == 1){
+            printf("\nPEDIDO NO VIABLE: Inventario y tiempo insuficientes.\n");
+        }
+        else if (invenins == 1){
+            printf("\nPEDIDO NO VIABLE: Inventario insuficiente.\n");
+        }
+        else if (tiempoins == 1){
+            printf("\nPEDIDO NO VIABLE: Tiempo insuficiente.\n");
+        }
+        printf("No es posible confirmar el pedido.\n");
     }
 }
 void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
@@ -505,15 +480,13 @@ void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
     printf("4. Salir\n");
     printf(">> ");
     int opc=validarfloat(1,4);
-    switch (opc)
-    {
+    switch (opc){
     case 1:
         mostrarinventario(ing, *conting);
         printf("---Reabastecer ingrediente---\n");
         printf("Ingrese el ID del ingrediete: ");
         id =validarcantidad(0);
-        for (int i = 0; i < *conting; i++)
-        {
+        for (int i = 0; i < *conting; i++){
             if(ing[i].id==id){
                 pos=i;
                 break;
@@ -532,32 +505,27 @@ void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
         mostrarinventario(ing, *conting);
         printf("---Registrar consumo o perdida---\n");
         printf("Ingrese el ID del ingrediete: ");
-        id = validarcantidad(0);
-        for (int i = 0; i < *conting; i++)
-        {
+        id = validarfloat(1, *conting);
+        for (int i = 0; i < *conting; i++){
             if (ing[i].id == id)
             {
                 pos = i;
                 break;
             }
         }
-        if (pos == -1)
-        {
+        if (pos == -1){
             printf("Ingrediente no encontrado o no existente\n");
             break;
         }
-        printf("Cantidad descontar: ");
-        cant=validarcantidad(0);
-        if (cant > ing[pos].cantidad)
-        {
-            printf("Stock insuficiente.\n");
-            break;
+        do{
+        printf("Cantidad a descontar: ");
+        cant = validarcantidad(0);
+        if (cant > ing[pos].cantidad){
+            printf("Stock insuficiente. Disponible: %.2f %s\n", ing[pos].cantidad, ing[pos].unidad);
         }
+    } while (cant > ing[pos].cantidad);
         ing[pos].cantidad-=cant;
-        printf("Stock restante de %s: %.2f %s\n",
-               ing[pos].nombre,
-               ing[pos].cantidad,
-               ing[pos].unidad);
+        printf("Stock restante de %s: %.2f %s\n", ing[pos].nombre, ing[pos].cantidad, ing[pos].unidad);
         break;
     case 3:
         int anterior = *conting;
@@ -592,8 +560,7 @@ void existencias(Ingredientes *ing, int conting){
     case 2:
     printf("Ingrese el ID del ingrediente (1-%d): ", conting);
     id=validarfloat(1, conting);
-    for (int i = 0; i < conting; i++)
-    {
+    for (int i = 0; i < conting; i++){
         if(ing[i].id==id){
             pos=i;
             break;
