@@ -469,10 +469,6 @@ void evaluarpedido(Productos *prod, int cont, Ingredientes *ing, int conting){
 void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
     int pos=-1, id;
     float cant;
-    if (*conting==0){
-        printf("Inventario vacio.\n");
-        return;
-    }
     printf("---Actualizar inventario---\n");
     printf("1. Reabastecer ingrediente\n");
     printf("2. Registrar consumo o perdida\n");
@@ -482,6 +478,10 @@ void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
     int opc=validarfloat(1,4);
     switch (opc){
     case 1:
+        if (*conting == 0){
+            printf("Inventario vacio.\n");
+            break;
+        }
         mostrarinventario(ing, *conting);
         printf("---Reabastecer ingrediente---\n");
         printf("Ingrese el ID del ingrediete: ");
@@ -502,6 +502,10 @@ void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
         printf("Reabastecimiento exitoso\n");
         break;
     case 2:
+        if (*conting == 0){
+            printf("Inventario vacio.\n");
+            break;
+        }
         mostrarinventario(ing, *conting);
         printf("---Registrar consumo o perdida---\n");
         printf("Ingrese el ID del ingrediete: ");
@@ -515,6 +519,11 @@ void actualiv(Ingredientes *ing, int *conting, Productos *prod, int contprod){
         }
         if (pos == -1){
             printf("Ingrediente no encontrado o no existente\n");
+            break;
+        }
+        if (ing[pos].cantidad <= 0){
+            printf("No hay existencias disponibles de %s.\n",
+                   ing[pos].nombre);
             break;
         }
         do{
