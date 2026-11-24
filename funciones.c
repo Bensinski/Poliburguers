@@ -452,13 +452,13 @@ void evaluarpedido(Productos *prod, int cont, Ingredientes *ing, int conting){
                    ing[i].nombre,
                    necesarios[i], ing[i].unidad,
                    ing[i].cantidad, ing[i].unidad);
-            if (necesarios[i] > ing[i].cantidad){
+            if (necesarios[i] > ing[i].cantidad+0.0001f){
                 printf("Ingrediente insuficiente.\n");
                 invenins = 1;
             }
         }
     }
-    if (tiempotot > tiempodis){
+    if (tiempotot > tiempodis + 0.0001f){
         tiempoins = 1;
     }
     if (invenins == 0 && tiempoins == 0){
