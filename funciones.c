@@ -175,7 +175,6 @@ void editreceta(Productos *prod, int pos, Ingredientes *ing, int conting){
     do{
         printf("\n--- EDITAR RECETA ---\n");
         printf("Producto: %s\n", prod[pos].nombre);
-
         printf("\nIngredientes actuales:\n");
         for (int i = 0; i < conting; i++){
             if (prod[pos].receta[i] > 0){
@@ -202,31 +201,57 @@ void editreceta(Productos *prod, int pos, Ingredientes *ing, int conting){
                 }
             }
         }
-        printf("Ingrese el ID del ingrediente: ");
-        id = validarfloat(1, 20);
-        posing = -1;
-        for (int i = 0; i < conting; i++){
-            if (id == ing[i].id){
-                posing = i;
-                break;
-            }
-        }
-        if (posing == -1){
-            printf("Ingrediente no encontrado.\n");
-            return;
-        }
-        switch (op)
-        {
-            case 1:
-                if (prod[pos].receta[posing]>0){
-                    printf("El ingrediente ya pertenece a la receta.\n");
+        do{
+            posing = -1;
+            printf("Ingrese el ID del ingrediente: ");
+            id = validarfloat(1, 20);
+            for (int i = 0; i < conting; i++){
+                if (id == ing[i].id)
+                {
+                    posing = i;
                     break;
                 }
-                printf("Cantidad necesaria por hamburguesa: ");
-                prod[pos].receta[posing] = validarcantidad(0);
-
-                printf("Ingrediente agregado correctamente.\n");
-                break;
+            }
+            if (posing == -1){
+                printf("Ingrediente no encontrado. Intente nuevamente.\n");
+            }
+        } while (posing == -1);
+        switch (op){
+        case 1:
+            int conff;
+            do{
+                if (prod[pos].receta[posing] > 0){
+                    printf("El ingrediente ya pertenece a la receta.\n");
+                }
+                else{
+                    printf("Cantidad necesaria por hamburguesa: ");
+                    prod[pos].receta[posing] = validarcantidad(0);
+                    printf("Ingrediente agregado correctamente.\n");
+                }
+                printf("\nDesea agregar otro ingrediente?\n");
+                printf("1. Si\n");
+                printf("2. No\n");
+                printf(">> ");
+                conff = validarfloat(1, 2);
+                if (conff == 1){
+                    mostrarinventario(ing, conting);
+                    do{
+                        posing = -1;
+                        printf("Ingrese el ID del ingrediente: ");
+                        id = validarfloat(1, 20);
+                        for (int i = 0; i < conting; i++){
+                            if (id == ing[i].id){
+                                posing = i;
+                                break;
+                            }
+                        }
+                        if (posing == -1){
+                            printf("Ingrediente no encontrado. Intente nuevamente.\n");
+                        }
+                    } while (posing == -1);
+                }
+            } while (conff==1);
+            break;
             case 2:
                 if (prod[pos].receta[posing]==0){
                     printf("Este ingrediente no pertenece a la receta.\n");
