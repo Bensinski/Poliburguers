@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include "funciones.h"
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     Ingredientes ing[20];
     Productos prod[20];
-    int op, opc, conting = 0, cont = 0;
-    do
-    {
+    Pedidos pedidos[100];
+    int op, opc, conting = 0, cont = 0, contped = 0;
+    do{
         printf("---Las Poliburguers---\n");
         printf("1. Registrar ingredientes e inventario\n");
         printf("2. Registrar productos del menu\n");
@@ -16,9 +15,10 @@ int main(int argc, char *argv[])
         printf("6. Vender (Evaluar pedido)\n");
         printf("7. Actualizar inventario\n");
         printf("8. Consultar existencias finales\n");
-        printf("9. Salir\n");
+        printf("9. Consultar historial de pedidos\n");
+        printf("10. Salir\n");
         printf(">> ");
-        op = validarfloat(1, 9);
+        op = validarfloat(1, 10);
         switch (op)
         {
         case 1:
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
             eliminar(prod, &cont);
             break;
         case 6:
-            evaluarpedido(prod, cont, ing, conting);
+            evaluarpedido(prod, cont, ing, conting, pedidos, &contped);
             break;
         case 7:
             actualiv(ing, &conting, prod, cont);
@@ -45,7 +45,10 @@ int main(int argc, char *argv[])
         case 8:
             existencias(ing, conting);
             break;
-            case 9:
+        case 9:
+            historialpedidos(pedidos, contped);
+            break;    
+            case 10:
             return 0;
         default:
             break;
